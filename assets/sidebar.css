@@ -1,0 +1,27 @@
+.toggle_image {
+    width: 1.5rem;
+    padding-left: 0.2rem;
+    padding-top: 0.8rem;
+    background-color: #db3d44;
+}
+
+.sidebar_div_collapse{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3rem;
+    /* padding: 2rem 1rem; */
+    background-color: #db3d44;
+}
+
+
+.sidebar_div_extended{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 6rem;
+    /* padding: 2rem 1rem; */
+    background-color: #db3d44;
+}
