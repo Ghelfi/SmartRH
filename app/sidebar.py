@@ -20,7 +20,7 @@ def build_sidebar(app: dash.Dash, conf: dict = {}) -> list:
         #     pills=True,
         # ),
     ],
-    className="sidebar_div_collapse",
+    className="sidebar_div sidebar_div_collapse",
     id='sidebar_div'
 )
 
@@ -48,7 +48,7 @@ def build_sidebar_callbacks(app):
         )
     def update_style(src):
         if src == app.get_asset_url('double_right_arrow_white.png'):
-            return "sidebar_div_collapse"
+            return "sidebar_div sidebar_div_collapse"
         else:
-            return "sidebar_div_extended"
+            return "sidebar_div sidebar_div_extended"
 

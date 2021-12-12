@@ -5,23 +5,20 @@
     background-color: #db3d44;
 }
 
-.sidebar_div_collapse{
+.sidebar_div{
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 3rem;
-    /* padding: 2rem 1rem; */
     background-color: #db3d44;
+    transition: width .1s;
+}
+
+.sidebar_div_collapse{
+    width: 3rem;
 }
 
 
 .sidebar_div_extended{
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 6rem;
-    /* padding: 2rem 1rem; */
-    background-color: #db3d44;
+    width: 8rem;
 }
