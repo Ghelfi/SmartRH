@@ -1,7 +1,10 @@
 import dash
+from dash import dcc
+from dash import html
 from .sidebar import build_sidebar, build_sidebar_callbacks
 import os
 from pathlib import Path
+
 
 def get_app(config: dict = {}) -> dash.Dash:
     current_filename = __file__
@@ -13,7 +16,20 @@ def get_app(config: dict = {}) -> dash.Dash:
         print(f"assets_folders set as {assets_dir}")
     app = dash.Dash(__name__, assets_folder=assets_dir)
 
-    app.layout = build_sidebar(app=app)
-    build_sidebar_callbacks(app)
+    layout = html.Div(
+        id='root_div',
+        className= 'root_div',
+        children=[
+            build_sidebar(app=app, config=config),
+            html.Div(
+                id='display_div',
+                children=[],
+                className='display_div'
+            )
+        ]
+    )
+
+    app.layout = layout
+    build_sidebar_callbacks(app, config=config, display_div_id='display_div')
 
     return app

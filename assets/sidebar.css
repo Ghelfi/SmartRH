@@ -1,10 +1,17 @@
+:root {
+    --primary_color: #db3d44;
+    --secondary_color: #eb8b8b;
+    --selected_color: #91252a;
+    --white: #fff;
+  }
+
 .toggle_image {
     width: 1.5rem;
     position: absolute;
-    right: 0px;
-    padding-right: 0.2rem;
+    left: 0px;
+    padding-left: 1rem;
     padding-top: 0.8rem;
-    background-color: #db3d44;
+    background-color: var(--primary_color);
 }
 
 .sidebar_div{
@@ -12,38 +19,75 @@
     top: 0;
     left: 0;
     bottom: 0;
-    background-color: #db3d44;
-    transition: width .1s;
+    background-color: var(--primary_color);
+    transition: .1s;
     display: block;
 }
 
 .sidebar_div_collapse{
-    width: 3rem;
+    width: 3.3rem;
 }
-
 
 .sidebar_div_extended{
-    width: 8rem;
+    width: 12rem;
 }
 
-.menu_item_div{
+.display_div{
+    width: 100vh;
+    height: 100%;
+    padding-left: 13rem;
+}
+
+.menu_item_div_base{
     height: 3rem;
     width: 100%;
-    background-color: #db3d44;
     position: absolute;
-    /* top: 3rem */
 }
 
-.menu_item_div:hover{
-    background-color: #9e363b;
+.menu_item_div_selected{
+    background-color: var(--selected_color);
 }
+
+.menu_item_div_unselected{
+    background-color: var(--primary_color);
+}
+
+.menu_item_div_unselected:hover{
+    background-color: var(--secondary_color);
+}
+
+/* .menu_item_div_selected{
+    background-color: var(--selected_color);
+} */
 
 .menu_image{
-    width: 2rem;
+    width: 1.3rem;
     display: block;
     position: absolute;
     top: 0;
     bottom: 0;
     margin: auto;
-    padding-left: 0.5rem;
+    padding-left: 1rem;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(317deg) brightness(103%) contrast(102%);
+}
+
+.menu_text{
+    color: var(--white);
+    padding-left: 3.5rem;
+    padding-top: 1rem;
+    font-size: 14px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;    
+    transition: opacity 0.2s linear;
+}
+
+.menu_text_collapse{
+    visibility: hidden;
+}
+
+.menu_text_extended{
+    visibility: visible;
 }
