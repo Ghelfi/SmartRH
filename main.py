@@ -7,22 +7,22 @@ if __name__ == '__main__':
             {
                 'image': 'search.svg',
                 'text': 'Recherche',
-                'children': 'Recherche'
             },
             {
                 'image': 'window.svg',
                 'text': 'Discussion',
-                'children': "Discussion"
             },
             {
                 'image': 'transfer.svg',
                 'text': 'Transfert',
-                'children': 'Transfert'
             },
             {
                 'image': 'settings.svg',
                 'text': 'Réglages',
-                'children': 'Réglages',
+            },
+            {
+                'image': 'settings.svg',
+                'text': 'Test',
             },
         ]
     }

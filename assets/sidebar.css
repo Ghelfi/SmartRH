@@ -56,10 +56,6 @@
     background-color: var(--secondary_color);
 }
 
-/* .menu_item_div_selected{
-    background-color: var(--selected_color);
-} */
-
 .menu_image{
     width: 1.3rem;
     display: block;
