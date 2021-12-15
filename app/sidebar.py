@@ -9,7 +9,25 @@ def build_sidebar(app: dash.Dash, conf: dict = {}) -> list:
 
     sidebar = html.Div(
     [
-        html.Img(id='toggle_image', src=app.get_asset_url('double_right_arrow_white.png'), className='toggle_image', n_clicks_timestamp=0)
+        html.Img(id='toggle_image', src=app.get_asset_url('double_right_arrow_white.png'), className='toggle_image', n_clicks_timestamp=0),
+        html.Div(
+            id='menu_item_1_div',
+            className='menu_item_div',
+            n_clicks_timestamp=0,
+            children=[
+                html.Img(id='menu_item_1_img', src=app.get_asset_url('double_right_arrow_white.png'), className='menu_image')
+            ],
+            style={'top': '3rem'}
+        ),
+        html.Div(
+            id='menu_item_2_div',
+            className='menu_item_div',
+            n_clicks_timestamp=0,
+            children=[
+                html.Img(id='menu_item_2_img', src=app.get_asset_url('double_left_arrow_white.png'), className='menu_image')
+            ],
+            style={'top': '6rem'}
+        ),
         # dbc.Nav(
         #     [
         #         dbc.NavLink("Home", href="/", active="exact"),
