@@ -6,7 +6,7 @@ db: SQLAlchemy = my_app.db
 class Candidat(db.Model):
     __tablename__ = "candidats"
     id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(40), unique=False, nullable=True)
+    user_name = db.Column(db.String(40), unique=False, nullable=True, index=True)
     user_firstname = db.Column(db.String(40), unique=False, nullable=True)
     phone_number = db.Column(db.String(15), unique=False, nullable=True)
     email = db.Column(db.String(120), unique=False, nullable=True)
@@ -67,7 +67,7 @@ class CV(db.Model):
     __tablename__ = "cvs"
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(100), unique=True, nullable=False)
-    date_submission = db.Column(db.Integer, unique=False, nullable=False)
+    date_submission = db.Column(db.Integer, unique=False, nullable=False, index=True)
     dropper_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False)   
 
@@ -101,7 +101,7 @@ class ExtractionAlgorithm(db.Model):
 class Field(db.Model):
     __tablename__ = 'fields'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False, index=True)
     def __repr__(self):
         return (
             f"<Field(id={self.id}, "
@@ -115,7 +115,7 @@ class Event(db.Model):
     cv_id = db.Column(db.Integer, db.ForeignKey('cvs.id'), nullable=False)
     algo_id = db.Column(db.Integer, db.ForeignKey('algorithms.id'), nullable=False)
     field_id = db.Column(db.Integer, db.ForeignKey('fields.id'), nullable=False)
-    value = db.Column(db.String(50), unique=False, nullable=False)
+    value = db.Column(db.String(50), unique=False, nullable=False, index=True)
    
     cv = db.relationship('CV', backref="cvs")
     algo = db.relationship('ExtractionAlgorithm', backref="algorithms")
