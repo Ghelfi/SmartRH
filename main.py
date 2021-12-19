@@ -3,11 +3,13 @@ from dash import html
 from app import build_sidebar, build_sidebar_callbacks
 from app import menu_layout_mapping_dictionnary, UnderConstructionLayout
 from app import my_app
-from db import tables
+from db import tables, initialize_tables
+import json
 
 def get_app(config: dict = {}) -> dash.Dash:
 
     my_app.db.create_all()
+    initialize_tables(my_app.db.session, conf["table_initialization"])
 
     base_layout = html.Div(
         id='root_div',
@@ -37,30 +39,8 @@ def get_app(config: dict = {}) -> dash.Dash:
 
 if __name__ == '__main__':
 
-    conf = {
-        'menu_items': [
-            {
-                'image': 'search.svg',
-                'text': 'Recherche',
-            },
-            {
-                'image': 'window.svg',
-                'text': 'Discussion',
-            },
-            {
-                'image': 'transfer.svg',
-                'text': 'Transfert',
-            },
-            {
-                'image': 'settings.svg',
-                'text': 'Réglages',
-            },
-            {
-                'image': 'settings.svg',
-                'text': 'Test',
-            },
-        ]
-    }
-
+    with open("configuration.json") as fr:
+        conf = json.load(fr)
+    
     app = get_app(config=conf)
     app.run_server(debug=True)

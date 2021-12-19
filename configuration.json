@@ -1,0 +1,78 @@
+{
+    "menu_items": [
+        {
+            "image": "search.svg",
+            "text": "Recherche"
+        },
+        {
+            "image": "window.svg",
+            "text": "Discussion"
+        },
+        {
+            "image": "transfer.svg",
+            "text": "Transfert"
+        },
+        {
+            "image": "settings.svg",
+            "text": "Réglages"
+        },
+        {
+            "image": "settings.svg",
+            "text": "Test"
+        }
+    ],
+    "table_initialization": {
+        "Roles": [
+            {
+                "name": "admin",
+                "value": 7
+            },
+            {
+                "name": "contributor",
+                "value": 3
+            },
+            {
+                "name": "guest",
+                "value": 1
+            }
+        ],
+        "ExtractionAlgorithms": [
+            {
+                "name": "DummyAlgorithm",
+                "version": "0.0.1"
+            }
+        ],
+        "Status": [
+            {
+                "name": "pending"
+            },
+            {
+                "name": "failed"
+            },
+            {
+                "name": "success"
+            },
+            {
+                "name": "archived"
+            },
+            {
+                "name": "blacklisted"
+            }
+        ],
+        "Fields": [
+            {
+                "name": "name"
+            },
+            {
+                "name": "skill"
+            },
+            {
+                "name": "company"
+            },
+            {
+                "name": "date"
+            }
+        ]
+    }
+
+}
