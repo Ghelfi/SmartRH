@@ -21,9 +21,9 @@ if not os.path.isdir(assets_dir):
 else:
     print(f"assets_folders set as {assets_dir}")
 dash_app = dash.Dash(__name__, assets_folder=assets_dir)
-db = SQLAlchemy(dash_app.server)
 
 dash_app.server.config['SQLALCHEMY_DATABASE_URI'] = os.path.join('sqlite:///'+os.getcwd(), 'test.db')
+dash_app.server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(dash_app.server)
 
 my_app = App(dash_app, db)
