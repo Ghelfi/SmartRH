@@ -24,14 +24,14 @@ class Candidat(db.Model):
 class Role(db.Model):
     __tablename__ = "roles"
     id = db.Column(db.Integer, primary_key=True)
-    role_name = db.Column(db.String(100), unique=True, nullable=False)
-    role_value = db.Column(db.Integer, unique=False, nullable=False)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    value = db.Column(db.Integer, unique=False, nullable=False)
 
     def __repr__(self):
         return (
             f"<Role(id={self.id}, "
-            f"role_name={self.role_name}, "
-            f"role_value={self.role_value}, "
+            f"name={self.name}, "
+            f"value={self.value}, "
             f")>"
         )
 
@@ -47,7 +47,7 @@ class User(db.Model):
         return (
             f"<User(id={self.id}, "
             f"name={self.name}, "
-            f"role={self.role.role_name}, "
+            f"role={self.role.name}, "
             f")>"
         )
 
