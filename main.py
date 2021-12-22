@@ -3,13 +3,14 @@ from dash import html
 from app import build_sidebar, build_sidebar_callbacks
 from app import menu_layout_mapping_dictionnary, UnderConstructionLayout
 from app import my_app
-from db import tables, initialize_tables
+from db import tables, initialize_tables, fill_tables_with_dummy_examples
 import json
 
 def get_app(config: dict = {}) -> dash.Dash:
 
     my_app.db.create_all()
-    initialize_tables(my_app.db.session, conf["table_initialization"])
+    initialize_tables(my_app, conf["table_initialization"])
+    fill_tables_with_dummy_examples(my_app)
 
     base_layout = html.Div(
         id='root_div',
