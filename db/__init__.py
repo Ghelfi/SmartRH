@@ -1,1 +1,1 @@
-from .init_tables import initialize_tables
+from .init_tables import initialize_tables, fill_tables_with_dummy_examples

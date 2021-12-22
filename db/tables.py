@@ -6,10 +6,10 @@ db: SQLAlchemy = my_app.db
 class Candidat(db.Model):
     __tablename__ = "candidats"
     id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(40), unique=False, nullable=True, index=True)
-    user_firstname = db.Column(db.String(40), unique=False, nullable=True)
+    name = db.Column(db.String(40), unique=False, nullable=True, index=True)
+    firstname = db.Column(db.String(40), unique=False, nullable=True)
     phone_number = db.Column(db.String(15), unique=False, nullable=True)
-    email = db.Column(db.String(120), unique=False, nullable=True)
+    email = db.Column(db.String(120), unique=True, nullable=True)
 
     def __repr__(self):
         return (
