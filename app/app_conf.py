@@ -1,7 +1,7 @@
 import dash
 import os
 from pathlib import Path
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, Model
 from dataclasses import dataclass
 
 @dataclass
@@ -11,6 +11,16 @@ class App:
 
     def __call__(self) -> dash.Dash:
         return self.app
+
+    def add_to_db(self, elem: Model):
+        try:
+            self.db.session.add(elem)
+            self.db.session.commit()
+        except:
+            self.db.session.rollback()
+
+    def query(self, elem: Model):
+        return self.db.session.query(elem)
 
 
 current_filename = __file__
