@@ -16,9 +16,9 @@ def initialize_tables(app: App, conf: dict):
         field = Field(name=field_dict['name'])
         app.add_to_db(field)
 
-    for extraction_algorithm_dict in conf['ExtractionAlgorithms']:
-        algo = ExtractionAlgorithm(name=extraction_algorithm_dict['name'], version=extraction_algorithm_dict['version'])
-        app.add_to_db(algo)
+    # for extraction_algorithm_dict in conf['ExtractionAlgorithms']:
+    #     algo = ExtractionAlgorithm(name=extraction_algorithm_dict['name'], version=extraction_algorithm_dict['version'])
+    #     app.add_to_db(algo)
     
 def fill_tables_with_dummy_examples(app: App):
 
