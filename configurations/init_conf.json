@@ -1,26 +1,4 @@
 {
-    "menu_items": [
-        {
-            "image": "search.svg",
-            "text": "Recherche"
-        },
-        {
-            "image": "window.svg",
-            "text": "Discussion"
-        },
-        {
-            "image": "transfer.svg",
-            "text": "Transfert"
-        },
-        {
-            "image": "settings.svg",
-            "text": "Réglages"
-        },
-        {
-            "image": "settings.svg",
-            "text": "Test"
-        }
-    ],
     "table_initialization": {
         "Roles": [
             {
@@ -34,12 +12,6 @@
             {
                 "name": "guest",
                 "value": 1
-            }
-        ],
-        "ExtractionAlgorithms": [
-            {
-                "name": "DummyAlgorithm",
-                "version": "0.0.1"
             }
         ],
         "Status": [

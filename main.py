@@ -4,10 +4,38 @@ from app import build_sidebar, build_sidebar_callbacks
 from app import menu_layout_mapping_dictionnary, UnderConstructionLayout
 from app import my_app
 from db import tables, initialize_tables, fill_tables_with_dummy_examples
+from utils import configure_logging
 import json
+import argparse
+import os
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description='Launch the SmartRH application.')
+
+    root_dir = os.getcwd()
+
+    parser.add_argument('--init_conf_file', type=str, default=os.path.join(root_dir, 'configurations', 'init_conf.json'))
+    parser.add_argument('--log_conf_file', type=str, default=os.path.join(root_dir, 'configurations', 'log_conf.json'))
+    parser.add_argument('--app_conf_file', type=str, default=os.path.join(root_dir, 'configurations', 'app_conf.json'))
+
+    return parser.parse_args()
+
+def parse_conf_file(args: argparse.Namespace) -> dict:
+    
+    res_dict = {}
+    with open(args.init_conf_file) as fr:
+        conf = json.load(fr)
+        res_dict = res_dict | conf
+    with open(args.log_conf_file) as fr:
+        conf = json.load(fr)
+        res_dict = res_dict | conf
+    with open(args.app_conf_file) as fr:
+        conf = json.load(fr)
+        res_dict = res_dict | conf
+
+    return res_dict
 
 def get_app(config: dict = {}) -> dash.Dash:
-
     my_app.db.create_all()
     initialize_tables(my_app, conf["table_initialization"])
     fill_tables_with_dummy_examples(my_app)
@@ -40,8 +68,11 @@ def get_app(config: dict = {}) -> dash.Dash:
 
 if __name__ == '__main__':
 
-    with open("configuration.json") as fr:
-        conf = json.load(fr)
+    args = parse_args()
+    conf = parse_conf_file(args)
+    configure_logging(**conf)
+
+    
     
     app = get_app(config=conf)
     app.run_server(debug=True)

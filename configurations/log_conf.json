@@ -1,0 +1,5 @@
+{
+    "log_name": "SmartRHLogs_dev",
+    "log_dir": "./logs",
+    "log_level": "INFO"
+}

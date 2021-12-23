@@ -1,0 +1,30 @@
+{
+    "menu_items": [
+        {
+            "image": "search.svg",
+            "text": "Recherche"
+        },
+        {
+            "image": "window.svg",
+            "text": "Discussion"
+        },
+        {
+            "image": "transfer.svg",
+            "text": "Transfert"
+        },
+        {
+            "image": "settings.svg",
+            "text": "Réglages"
+        },
+        {
+            "image": "settings.svg",
+            "text": "Test"
+        }
+    ],
+    "ExtractionAlgorithms": [
+        {
+            "name": "DummyAlgorithm",
+            "version": "0.0.1"
+        }
+    ]
+}
