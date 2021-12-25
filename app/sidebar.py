@@ -5,6 +5,10 @@ from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import json
 import numpy as np
+import logging
+from .app_conf import App
+
+logger = logging.getLogger()
 
 
 def build_sidebar(app: dash.Dash, config: dict = {}) -> list:
@@ -34,49 +38,49 @@ def build_sidebar(app: dash.Dash, config: dict = {}) -> list:
 
     return sidebar
 
-def build_sidebar_callbacks(app, display_div_id: str, config: dict= {}):
+def build_sidebar_callbacks(app: App, display_div_id: str, config: dict= {}):
 
     menu_items = config['menu_items']
 
 
     # Change toggle icon on click
-    @app.callback(
+    @app.app.callback(
     Output('toggle_image', 'src'),
     [Input('toggle_image', 'n_clicks_timestamp')],
     [State('toggle_image', 'src')])
     def change_img(click, src):
         if not click: raise PreventUpdate
 
-        if src == app.get_asset_url('double_right_arrow_white.png'):
-            return app.get_asset_url('double_left_arrow_white.png')
+        if src == app.app.get_asset_url('double_right_arrow_white.png'):
+            return app.app.get_asset_url('double_left_arrow_white.png')
         
         else:
-            return app.get_asset_url('double_right_arrow_white.png')
+            return app.app.get_asset_url('double_right_arrow_white.png')
 
     # Change div width on click
-    @app.callback(
+    @app.app.callback(
         Output('sidebar_div', 'className'), 
         [Input('toggle_image', 'src')]
         )
     def update_style(src):
-        if src == app.get_asset_url('double_right_arrow_white.png'):
+        if src == app.app.get_asset_url('double_right_arrow_white.png'):
             return "sidebar_div sidebar_div_collapse"
         else:
             return "sidebar_div sidebar_div_extended"
 
     # Change Menu Item text visibility on click
-    @app.callback(
+    @app.app.callback(
     [Output('menu_item_{}_text'.format(ind), 'className') for ind in range(len(menu_items))], 
     [Input('toggle_image', 'src')]
     )
     def update_text_style(src):
-        if src == app.get_asset_url('double_right_arrow_white.png'):
+        if src == app.app.get_asset_url('double_right_arrow_white.png'):
             return ["menu_text menu_text_collapse" for e in menu_items]
         else:
             return ["menu_text menu_text_extended" for e in menu_items]
 
     # Change Menu Item background if selected
-    @app.callback(
+    @app.app.callback(
     [Output('menu_item_{}_div'.format(e), 'className') for e in range(len(menu_items))],
     [Input('menu_item_{}_div'.format(e), 'n_clicks_timestamp') for e in range(len(menu_items))],
     )
@@ -93,7 +97,7 @@ def build_sidebar_callbacks(app, display_div_id: str, config: dict= {}):
         return tuple(res)
 
     # Change The display div children depending on the pressed button
-    @app.callback(
+    @app.app.callback(
     Output(display_div_id, 'children'),
     [Input('menu_item_{}_div'.format(e), 'n_clicks_timestamp') for e in range(len(menu_items))],
     )
