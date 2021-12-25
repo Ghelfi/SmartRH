@@ -21,10 +21,9 @@
             "text": "Test"
         }
     ],
-    "ExtractionAlgorithms": [
-        {
+    "ExtractionAlgorithm":  {
             "name": "DummyAlgorithm",
             "version": "0.0.1"
         }
-    ]
+    
 }
