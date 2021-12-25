@@ -3,11 +3,13 @@ import os
 from pathlib import Path
 from flask_sqlalchemy import SQLAlchemy, Model
 from dataclasses import dataclass
+from extraction import GenericExtractor
 
 @dataclass
 class App:
     app: dash.Dash
     db: SQLAlchemy
+    extractor: GenericExtractor = None
 
     def __call__(self) -> dash.Dash:
         return self.app
