@@ -4,6 +4,8 @@ from app import build_sidebar, build_sidebar_callbacks
 from app import menu_layout_mapping_dictionnary, UnderConstructionLayout
 from app import my_app
 from db import tables, initialize_tables, fill_tables_with_dummy_examples
+from extraction import load_extractor
+import extraction
 from utils import configure_logging
 import json
 import argparse
@@ -40,6 +42,9 @@ def get_app(config: dict = {}) -> dash.Dash:
     initialize_tables(my_app, conf["table_initialization"])
     fill_tables_with_dummy_examples(my_app)
 
+    extractor = load_extractor(**conf["ExtractionAlgorithm"])
+    my_app.extractor = extractor
+
     base_layout = html.Div(
         id='root_div',
         className= 'root_div',
@@ -62,7 +67,7 @@ def get_app(config: dict = {}) -> dash.Dash:
             config['menu_items'][ind]['children'] = UnderConstructionLayout().get_layout()
 
 
-    build_sidebar_callbacks(my_app(), config=config, display_div_id='display_div')
+    build_sidebar_callbacks(my_app, config=config, display_div_id='display_div')
 
     return my_app()
 
