@@ -1,10 +1,13 @@
 from app import my_app
 from flask_sqlalchemy import SQLAlchemy
+from app import App
+from sqlalchemy.sql.elements import and_
+
 
 db: SQLAlchemy = my_app.db
 
-class Candidat(db.Model):
-    __tablename__ = "candidats"
+class Candidate(db.Model):
+    __tablename__ = "candidates"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), unique=False, nullable=True, index=True)
     firstname = db.Column(db.String(40), unique=False, nullable=True)
@@ -13,9 +16,9 @@ class Candidat(db.Model):
 
     def __repr__(self):
         return (
-            f"<Candidat(id={self.id}, "
-            f"user_name={self.user_name}, "
-            f"user_firstname={self.user_firstname}, "
+            f"<Candidate(id={self.id}, "
+            f"user_name={self.name}, "
+            f"user_firstname={self.firstname}, "
             f"phone_number={self.phone_number}, "
             f"email={self.email}, "
             f")>"
@@ -41,7 +44,7 @@ class User(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
 
-    role = db.relationship('Role', backref="roles")
+    role = db.relationship('Role')
 
     def __repr__(self):
         return (
@@ -69,17 +72,19 @@ class CV(db.Model):
     filename = db.Column(db.String(100), unique=True, nullable=False)
     date_submission = db.Column(db.Integer, unique=False, nullable=False, index=True)
     dropper_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    candidate_id = db.Column(db.Integer, db.ForeignKey('candidates.id'), nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False)   
 
-    register = db.relationship('User', backref="users")
-    status = db.relationship('Status', backref="status")
+    register = db.relationship('User')
+    status = db.relationship('Status')
+    candidate = db.relationship('Candidate')
 
     def __repr__(self):
         return (
             f"<CV(id={self.id}, "
-            f"filename={self.user_name}, "
-            f"date_submission={self.user_firstname}, "
-            f"register_by={self.regsiter.name}, "
+            f"filename={self.filename}, "
+            f"date_submission={self.date_submission}, "
+            f"register_by={self.register.name}, "
             f"status={self.status.name}, "
             f")>"
         )
@@ -87,7 +92,7 @@ class CV(db.Model):
 class ExtractionAlgorithm(db.Model):
     __tablename__ = 'algorithms'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=False, nullable=False)
     version = db.Column(db.String(10), unique=False, nullable=False)
 
     def __repr__(self):
@@ -117,9 +122,9 @@ class Event(db.Model):
     field_id = db.Column(db.Integer, db.ForeignKey('fields.id'), nullable=False)
     value = db.Column(db.String(50), unique=False, nullable=False, index=True)
    
-    cv = db.relationship('CV', backref="cvs")
-    algo = db.relationship('ExtractionAlgorithm', backref="algorithms")
-    field = db.relationship('Field', backref="fields")
+    cv = db.relationship('CV')
+    algo = db.relationship('ExtractionAlgorithm')
+    field = db.relationship('Field')
 
     def __repr__(self):
         return (
@@ -139,3 +144,23 @@ class Link(db.Model):
 
     event_one = db.relationship("Event", foreign_keys=[event_id_one])
     event_two = db.relationship("Event", foreign_keys=[event_id_two])
+
+
+def get_field(app: App, name: str)-> Field:
+    return app.query(Field).filter(Field.name == name.lower()).first()
+
+def get_role(app: App, name: str)-> Role:
+    return app.query(Role).filter(Role.name == name.lower()).first()
+
+def get_extraction_algorithm(app: App, name: str, version: str)-> ExtractionAlgorithm:
+    return app.query(ExtractionAlgorithm).filter(and_(ExtractionAlgorithm.name == name, ExtractionAlgorithm.version == version)).first()
+
+def get_candidate(app: App, name: str, firstname: str, phone_number:str, email: str)-> Candidate:
+    return app.query(Candidate).filter(
+        and_(
+            Candidate.name == name, 
+            Candidate.firstname == firstname,
+            Candidate.phone_number == phone_number,
+            Candidate.email == email,
+            )
+        ).first()

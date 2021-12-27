@@ -3,7 +3,7 @@ from dash import html
 from app import build_sidebar, build_sidebar_callbacks
 from app import menu_layout_mapping_dictionnary, UnderConstructionLayout
 from app import my_app
-from db import tables, initialize_tables, fill_tables_with_dummy_examples
+from db import tables, initialize_tables, generate_mock_data
 from extraction import load_extractor
 import extraction
 from utils import configure_logging
@@ -39,8 +39,11 @@ def parse_conf_file(args: argparse.Namespace) -> dict:
 
 def get_app(config: dict = {}) -> dash.Dash:
     my_app.db.create_all()
+    extractor = load_extractor(**conf["ExtractionAlgorithm"])
+    my_app.extractor = extractor
+
     initialize_tables(my_app, conf["table_initialization"])
-    fill_tables_with_dummy_examples(my_app)
+    generate_mock_data(my_app)
 
     extractor = load_extractor(**conf["ExtractionAlgorithm"])
     my_app.extractor = extractor

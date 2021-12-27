@@ -33,7 +33,10 @@
         ],
         "Fields": [
             {
-                "name": "name"
+                "name": "other"
+            },
+            {
+                "name": "position"
             },
             {
                 "name": "skill"
