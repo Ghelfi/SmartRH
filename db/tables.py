@@ -164,3 +164,42 @@ def get_candidate(app: App, name: str, firstname: str, phone_number:str, email: 
             Candidate.email == email,
             )
         ).first()
+
+def get_cv(app: App, filename:str, date_submission:int, dropper_id:int, candidate_id:int, status_id:int)-> CV:
+    return app.query(CV).filter(
+        and_(
+            CV.filename == filename,
+            CV.date_submission == date_submission,
+            CV.dropper_id == dropper_id,
+            CV.candidate_id == candidate_id,
+            CV.status_id == status_id
+        )
+    ).first()
+
+def get_cv_from_cvobject(app:App, cv:CV)-> CV:
+    return app.query(CV).filter(
+        and_(
+            CV.filename == cv.filename,
+            CV.dropper_id == cv.dropper_id,
+            CV.candidate_id == cv.candidate_id,
+            CV.status_id == cv.status_id
+        )
+    ).first()
+
+def get_candidate_from_candidateobject(app: App, candidate: Candidate)-> Candidate:
+    return app.query(Candidate).filter(
+        and_(
+            Candidate.name == candidate.name, 
+            Candidate.firstname == candidate.firstname,
+            Candidate.phone_number == candidate.phone_number,
+            Candidate.email == candidate.email,
+            )
+        ).first()
+
+def get_user_from_userobject(app: App, user: User)-> User:
+    return app.query(User).filter(
+        and_(
+            User.name == user.name, 
+            User.role_id == user.role_id
+            )
+        ).first()

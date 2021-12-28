@@ -1,6 +1,10 @@
+import pdb
 from numpy.lib.index_tricks import index_exp
 from sqlalchemy.sql.elements import and_
-from .tables import Role, Status, Field, ExtractionAlgorithm, Candidate, CV, Event, User, get_candidate, get_extraction_algorithm, get_field, get_role
+from .tables import Link, Role, Status, Field, ExtractionAlgorithm, \
+        Candidate, CV, Event, User, get_candidate, get_extraction_algorithm, \
+        get_field, get_role, get_cv, get_cv_from_cvobject, get_candidate_from_candidateobject, \
+        get_user_from_userobject
 from flask_sqlalchemy import SQLAlchemy, SessionBase, sqlalchemy
 from app import App
 from extraction import normalize_skill_list
@@ -43,8 +47,9 @@ def generate_mock_data(app: App):
             phone_number="0699999999", 
             email="{}.{}@mail.com".format(candidate_name[0], candidate_name[1])
             )
-        candidates.append(candidate)
         app.add_to_db(candidate)
+        candidates.append(get_candidate_from_candidateobject(app, candidate))
+
 
 
     # Insert Users
@@ -60,7 +65,7 @@ def generate_mock_data(app: App):
     for ind, user_name in enumerate(user_names):
         user = User(name=user_name, role=roles[ind%len(roles)])
         app.add_to_db(user)
-        users.append(user)
+        users.append(get_user_from_userobject(app, user))
 
     # Insert CVs
     number_of_cvs = 10
@@ -71,12 +76,12 @@ def generate_mock_data(app: App):
         cv = CV(
             filename = f"dummy_cv_{ind_cv}",
             date_submission = int(dt.datetime.now().strftime('%s')),
-            register = users[ind_cv%len(users)],
-            status = status[ind_cv%len(status)],
-            candidate= candidates[ind_cv%len(candidates)]
+            dropper_id = users[ind_cv%len(users)].id,
+            status_id = status[ind_cv%len(status)].id,
+            candidate_id= candidates[ind_cv%len(candidates)].id
         )
         app.add_to_db(cv)
-        cvs.append(cv)
+        cvs.append(get_cv_from_cvobject(app, cv))
 
 
 
@@ -85,7 +90,8 @@ def generate_mock_data(app: App):
     skill_list = ['tf', 'tensorflow', 'Tensorflow', 'TF', 'PyTorch', 'CUDA', 'GPU', 'C++', 'Python', 'TF2.X', 'Gestion de Projet', 'Management', 'French', 'English']
     company_list = ['World Corp', 'Local Corp', 'LC', 'ZonZon', 'Oogle', 'Tech University', 'MidTech University']
     position_list = ['Data Scientist', 'data Engineer', 'Dev', 'Manager', 'Data God', 'Intern']
-    
+    other_list = ["Hiking", "Reading", "Football", "Travel", "Informatics"]
+
     extractor = get_extraction_algorithm(app, name=app.extractor.name, version=app.extractor.version)
     
     for cv in cvs:
@@ -105,10 +111,19 @@ def generate_mock_data(app: App):
             
             position = np.random.choice(position_list)
             skills = normalize_skill_list(np.random.choice(skill_list, size=np.random.randint(1, 5)).tolist())
+            others = normalize_skill_list(np.random.choice(other_list, size=np.random.randint(1, 3)).tolist())
             company = np.random.choice(company_list)
             position_event = Event(cv=cv, algo=extractor, field=get_field(app, 'position'), value = position)
             company_event = Event(cv=cv, algo=extractor, field=get_field(app, 'company'), value = company)
-            app.add_to_db(position_event)
-            app.add_to_db(company_event)
-            pass
+            skill_events = [Event(cv=cv, algo=extractor, field=get_field(app, 'skill'), value = e) for e in skills]
+            other_events = [Event(cv=cv, algo=extractor, field=get_field(app, 'other'), value = e) for e in others]
+
+            event_list = [company_event, position_event]
+            event_list.extend(skill_events)
+            event_list.extend(other_events)
+            [app.add_to_db(e) for e in event_list]
+            for ind_event_1, event_1 in enumerate(event_list):
+                for ind_event_2 in range(ind_event_1+1, len(event_list)):
+                    link = Link(event_id_one=event_list[ind_event_1].id, event_id_two=event_list[ind_event_2].id)
+                    app.add_to_db(link)
 
