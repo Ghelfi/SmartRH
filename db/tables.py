@@ -114,36 +114,67 @@ class Field(db.Model):
             f")>"
         )
 
-class Event(db.Model):
-    __tablename__ = "events"
+class ExperienceType(db.Model):
+    __tablename__ ="experience_types"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False, index=True)
+    def __repr__(self):
+        return (
+            f"<ExperienceType(id={self.id}, "
+            f"name={self.name}, "
+            f")>"
+        )
+
+class Experience(db.Model):
+    __tablename__ = 'entries'
     id = db.Column(db.Integer, primary_key=True)
     cv_id = db.Column(db.Integer, db.ForeignKey('cvs.id'), nullable=False)
     algo_id = db.Column(db.Integer, db.ForeignKey('algorithms.id'), nullable=False)
+    experience_type_id = db.Column(db.Integer, db.ForeignKey('experience_types.id'), nullable=False)
+    start_date =  db.Column(db.Integer, unique=False, nullable=True, index=True)
+    stop_date =  db.Column(db.Integer, unique=False, nullable=True, index=True)
+
+    cv = db.relationship('CV')
+    algo = db.relationship('ExtractionAlgorithm')
+    experience_type = db.relationship('ExperienceType')
+
+    def __repr__(self):
+        return (
+            f"<Experience(id={self.id}, "
+            f"cv_filename={self.cv.filename}, "
+            f"type={self.experience_type.name}, "
+            f"extraction_algorithm={self.algo.name} v{self.algo.version}, "
+            f"start_date={self.start_date}, "
+            f"stop_date={self.stop_date}, "
+            f")>"
+        )
+
+class Event(db.Model):
+    __tablename__ = "events"
+    id = db.Column(db.Integer, primary_key=True)
+    experience_id = db.Column(db.Integer, db.ForeignKey('experiences.id'), nullable=False)
     field_id = db.Column(db.Integer, db.ForeignKey('fields.id'), nullable=False)
     value = db.Column(db.String(50), unique=False, nullable=False, index=True)
    
-    cv = db.relationship('CV')
-    algo = db.relationship('ExtractionAlgorithm')
+    experience = db.relationship('Experience')
     field = db.relationship('Field')
 
     def __repr__(self):
         return (
             f"<Event(id={self.id}, "
-            f"cv_filename={self.cv.filename}, "
             f"type={self.field.name}, "
             f"value={self.value}, "
-            f"extraction_algorithm={self.algo.name} v{self.algo.version}, "
             f")>"
         )
 
-class Link(db.Model):
-    __tablename__ = "links"
-    id = db.Column(db.Integer, primary_key=True)
-    event_id_one = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
-    event_id_two = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
+# class Link(db.Model):
+#     __tablename__ = "links"
+#     id = db.Column(db.Integer, primary_key=True)
+#     event_id_one = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
+#     event_id_two = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
 
-    event_one = db.relationship("Event", foreign_keys=[event_id_one])
-    event_two = db.relationship("Event", foreign_keys=[event_id_two])
+#     event_one = db.relationship("Event", foreign_keys=[event_id_one])
+#     event_two = db.relationship("Event", foreign_keys=[event_id_two])
 
 
 def get_field(app: App, name: str)-> Field:
